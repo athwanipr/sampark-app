@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import'./Login.css'
 import hierarchy from '../image/hierarchy.jpg';
 import uppcl from '../image/uppcl.png';
@@ -6,8 +6,15 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Login() {
-    const blockInvalidChar = e => ['.','e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
     const navigate = useNavigate();
+    useEffect(() => {
+        if(localStorage.getItem('token'))
+        {
+          navigate('/')   
+        }  // eslint-disable-next-line
+      }, [])
+    const blockInvalidChar = e => ['.','e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
+    
     const [credentials, setCredentials] = useState({erpId:"",password:""});
     
     const onChange=(e)=>{
