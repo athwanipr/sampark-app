@@ -24,7 +24,7 @@ export default function Navbar() {
         <Link className="nav-link" to="/">Link</Link>
       </li> */}
     </ul>
-    {localStorage.getItem('token')&&<button type="button" class="btn btn-outline-light mx-2" onClick={handleLogout}>Logout</button>}
+    {localStorage.getItem('token')&&<button type="button" className="btn btn-outline-light mx-2" onClick={handleLogout}>Logout</button>}
   </div>
 </nav>
     )

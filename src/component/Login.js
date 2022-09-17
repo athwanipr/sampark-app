@@ -5,7 +5,7 @@ import uppcl from '../image/uppcl.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login() {
+export default function Login(props) {
     const navigate = useNavigate();
     useEffect(() => {
         if(localStorage.getItem('token'))
@@ -38,17 +38,21 @@ export default function Login() {
                 );
                 if(response.data.code===1)
                 {
-                //console.log(response);
-                //showAlert("Signed in successfully","success");
+                //props.showAlert("Welcome User","success");
                 localStorage.setItem('token',response.data.authToken);
-                alert("login Successfull");
                 navigate('/');
                 }
                 if(response.data.code===2) 
-                alert(response.data.msg)
+                {
+                    const msgInString = JSON.stringify(response.data.msg)
+                    props.showAlert(msgInString,"success");
+                }
+                
+                
             }
             catch(error){
-                alert(error.response.data.msg); 
+                const errorInString = JSON.stringify(error.response.data.msg)
+                    props.showAlert(errorInString,"success");
             }
     }
 
