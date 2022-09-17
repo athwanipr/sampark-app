@@ -21,7 +21,7 @@ router.post('/createuser',
             //Check if user with same email id exists
             employee = await Employee.findOne({ email: req.body.email});
             if (employee) {
-                return res.status(400).json({ code:2, msg: "User with same erp id already exists" });
+                return res.status(400).json({ code:2, msg: "User with same email already exists" });
             }
 
             //Check if user with same mobile no exists
@@ -46,22 +46,41 @@ router.post('/createuser',
                 role:req.body.role,
             });
 
-            //Auth Token Generation
-            const data = {
-                employee: {
-                    id: employee._id
-                }
-            }
-            const authToken = jwt.sign(data, JWT_SECRET);
-
-            res.json({ resCode:1, authToken });
-
-            console.log(authToken)
+            res.json({code:1,msg:"User Creation Successful"})
         }
         catch (error) {
             res.status(500).json({resCode:3, error:"Internal Server Error"});
         }
     });
 
+    //ROUTE 2: Login a user using : POST "api/user/login" doesnot require token
+router.post('/login',
+async (req, res) => {
+    const { erpId, password } = req.body;
+    try {
+
+        let employee = await Employee.findOne({ erpId });
+        if (!employee) {
+            return res.json({code:2, msg: "User does not exist" });
+        }
+        const passwordCompare = await bcrypt.compare(password, employee.password);
+        
+        if (!passwordCompare) {
+            return res.json({ code:2, msg: "Please try to login with correct credentials" });
+        }
+
+        //Auth Token Generation
+            const data = {
+                employee: {
+                    id: employee._id
+                }
+            }
+            const authToken = jwt.sign(data, JWT_SECRET);
+            res.status(200).json({ code:1, authToken:authToken});
+    }
+    catch (error) {
+        res.status(500).json({code:3,error:"Internal Server Error"});
+    }
+});
 
 module.exports=router;

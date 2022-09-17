@@ -1,14 +1,50 @@
-import React from 'react'
+import React,{useState} from 'react'
 import'./Login.css'
 import hierarchy from '../image/hierarchy.jpg';
 import uppcl from '../image/uppcl.png';
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Login() {
     const blockInvalidChar = e => ['.','e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
+    const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({erpId:"",password:""});
+    
+    const onChange=(e)=>{
+        setCredentials({...credentials,[e.target.name]:e.target.value})
+    }
+    const handleSubmit=async(e)=>{
+            e.preventDefault();
+            try{
+                const response = await axios.post(
+                    'http://localhost:8080/api/user/login',
+                    {
+                        erpId:credentials.erpId,
+                        password:credentials.password
+                    },
+                    {
+                        headers:
+                        {
+                            "Content-Type":"application/json"
+                        }
+                    },
+                );
+                if(response.data.code===1)
+                {
+                //console.log(response);
+                //showAlert("Signed in successfully","success");
+                localStorage.setItem('token',response.data.authToken);
+                alert("login Successfull");
+                navigate('/');
+                }
+                if(response.data.code===2) 
+                alert(response.data.msg)
+            }
+            catch(error){
+                alert(error.response.data.msg); 
+            }
+    }
 
-
-        
     return (
         <div>
             <div className="login-page bg-light">
@@ -27,15 +63,15 @@ export default function Login() {
                                 <div className="row">
                                     <div className="col-md-7 pe-0">
                                         <div className="form-left h-100 py-5 px-5">
-                                            <form action="" className="row g-4">
+                                            <form action="" className="row g-4" onSubmit={handleSubmit}>
                                                 <div className="col-12">
                                                     <label>Erp Id<span className="text-danger">*</span></label>
                                                     <div className="input-group">
                                                         <div className="input-group-text"><i className="fa-regular fa-id-card"></i></div>
                                                         <input type="number" step="1" onKeyDown={blockInvalidChar}
                                                         //  min="10000000"
-                                                         max="99999999"
-                                                         className="form-control" id="erpid" name="erpid" placeholder="Enter Your Erp Id"/>
+                                                         //max="99999999"
+                                                         className="form-control" id="erpId" name="erpId" placeholder="Enter Your Erp Id" onChange={onChange} required/>
                                                     </div>
                                                 </div>
 
@@ -43,7 +79,7 @@ export default function Login() {
                                                     <label>Password<span className="text-danger">*</span></label>
                                                     <div className="input-group">
                                                         <div className="input-group-text"><i className="fa-solid fa-lock"></i></div>
-                                                        <input type="password" className="form-control"  name="password" id="password" placeholder="Enter Password" />
+                                                        <input type="password" className="form-control"  name="password" id="password" placeholder="Enter Password" onChange={onChange} required/>
                                                     </div>
                                                 </div>
 
