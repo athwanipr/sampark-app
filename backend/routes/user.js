@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 
 var jwt = require('jsonwebtoken');
 const JWT_SECRET = 'uppcl%hierarchy##$$@@'
+var fetchuser=require('../middleware/fetchuser');
 
 
 //ROUTE 1: Create a user using : POST "api/user/createuser" doesnot require token
@@ -82,5 +83,20 @@ async (req, res) => {
         res.status(500).json({code:3,error:"Internal Server Error"});
     }
 });
+
+//ROUTE 3: Get logged in user details using : Get "api/auth/getuser"  require auth
+router.get('/getuser',fetchuser,
+    async (req, res) => {
+        try {
+            const employeeId = req.employee.id;
+            const employee = await Employee.findById(employeeId).select("-password");
+            res.json(employee);
+            console.log(employee);
+        }
+        catch (error) {
+            res.status(500).send("Internal Server Error");
+        }
+    });
+module.exports = router;
 
 module.exports=router;
