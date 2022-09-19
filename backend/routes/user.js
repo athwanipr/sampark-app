@@ -8,6 +8,19 @@ var jwt = require('jsonwebtoken');
 const JWT_SECRET = 'uppcl%hierarchy##$$@@'
 var fetchuser=require('../middleware/fetchuser');
 
+//Profile Pic upload, multer is used
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './upload');
+     },
+    filename: function (req, file, cb) {
+        cb(null , Date.now()+"--"+file.originalname);
+    }
+});
+
+var upload = multer({ storage: storage })
 
 //ROUTE 1: Create a user using : POST "api/user/createuser" doesnot require token
 router.post('/createuser',
@@ -84,7 +97,7 @@ async (req, res) => {
     }
 });
 
-//ROUTE 3: Get logged in user details using : Get "api/auth/getuser"  require auth
+//ROUTE 3: Get logged in user details using : Get "api/user/getuser"  require auth
 router.get('/getuser',fetchuser,
     async (req, res) => {
         try {
@@ -97,6 +110,18 @@ router.get('/getuser',fetchuser,
             res.status(500).send("Internal Server Error");
         }
     });
+
+    //Route 4 : Upload Image to database by employee :  Post "api/user/profilepic"
+
+    router.post('/setprofilepic',upload.single('image'),async(req,res)=>{
+        try{
+            console.log(req.file.filename);
+            res.send(req.file);
+        }
+        catch (error) {
+            //console.log(error);
+            res.status(500).send("Internal Server Error");
+        }
+    });
 module.exports = router;
 
-module.exports=router;
