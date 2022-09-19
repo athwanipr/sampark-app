@@ -65,14 +65,14 @@ export default function Login(props) {
                         {/* <div className="row" >
                         <img src={uppcl} alt="uppcllogo" className="img-fluid"/>
                     </div> */}
-                    <div className="mx-auto container d-flex justify-content-center">
-                    <img src={uppcl} alt="uppcllogo" className="img-fluid mb-3"/>
+                    <div className="mx-auto container d-flex justify-content-center"  style={{height:"10vh"}}>
+                    <img src={uppcl} alt="uppcllogo" className="img-fluid" />
                     </div>
-                            <h3 className="mb-3">Login Now</h3>
+                            <h5 className="mb-2">Login Now</h5>
                             <div className="bg-white shadow rounded">
                                 <div className="row">
                                     <div className="col-md-7 pe-0">
-                                        <div className="form-left h-100 py-5 px-5">
+                                        <div className="form-left h-100 py-3 px-5">
                                             <form action="" className="row g-4" onSubmit={handleSubmit}>
                                                 <div className="col-12">
                                                     <label>Erp Id<span className="text-danger">*</span></label>
@@ -111,7 +111,7 @@ export default function Login(props) {
                                         </div>
                                     </div>
                                     <div className="col-md-5 ps-0 d-none d-md-block">
-                                        <div className="form-right h-100 bg-white text-white text-center pt-5">
+                                        <div className="form-right h-80 bg-white text-white text-center pt-0">
                                             {/* <i className="bi bi-bootstrap"></i> */}
                                             <img src={hierarchy} className="img-fluid" alt="hierarchylogo" />
                                             

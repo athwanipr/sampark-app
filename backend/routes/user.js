@@ -118,7 +118,7 @@ router.get('/getuser',fetchuser,
             //console.log(req.file.filename);
             const updatedEmployee = await Employee.findOneAndUpdate({erpId:req.body.erpId},
             {image:`http://localhost:8080/upload/${req.file.filename}`},{new:true})
-            console.log(updatedEmployee);
+            
             //res.send(req.file);
             
             if(updatedEmployee)

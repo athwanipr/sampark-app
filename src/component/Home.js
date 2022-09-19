@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Profiler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
@@ -8,7 +8,7 @@ import './Home.css';
 export default function Home(props) {
     const [filedata, setfiledata] = useState("")
     const [profile, setProfile] = useState("");
-    const [photo,setPhoto] = useState("");
+    
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem('token')) {
