@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
-export default function Home() {
+
+
+export default function Home(props) {
     const [filedata, setfiledata] = useState("")
     const [profile, setProfile] = useState("");
+    const [photo,setPhoto] = useState("");
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem('token')) {
@@ -23,33 +26,45 @@ export default function Home() {
                 },
             });
         //console.log(response);
-        setProfile({ "erpId": response.data.erpId, "name": response.data.name, "designation": response.data.designation, "office": response.data.office, "mobileno": response.data.mobileno, "email": response.data.email, "role": response.data.role })
+        setProfile({ "erpId": response.data.erpId, "name": response.data.name, "designation": response.data.designation, "office": response.data.office, "mobileno": response.data.mobileno, "email": response.data.email, "role": response.data.role, "image":response.data.image })
 
 
     }
+
+    //Save image uploaded by user to local stored upload folder
     const data=new FormData();
     data.append('image',filedata);
+    data.append('erpId',profile.erpId);
 
     const onSubmit=async(e)=>{
         e.preventDefault();
 
         try{
-           // const img=document.querySelector('#photoupload').files[0];
-
-            console.log(filedata);
-
-            //const data = new FormData();
-            //data.append("image",img)
-            //const img = e.target.photoupload.value;
-            //console.log(img);
+          
             const response = await axios.post(
-                'http://localhost:8080/api/user/setprofilepic',data     
+                'http://localhost:8080/api/user/setprofilepic',data,
+                {headers: {
+                    "Content-Type": "multipart/form-data"
+                  }    }
             );
+
+            if(response.data.code === 1)
+            {
+                //document.getElementById('photodisplay').src=profile.image;
+                setProfile({...profile,['image']:response.data.updatedEmployee.image});
+                //console.log(profile.image);
+                props.showAlert(response.data.msg,"success");
+                //console.log(response);
+            }
+
+            if(response.data.code === 2)
+            props.showAlert(response.data.msg,"danger");
+            //console.log("success");  
         }
         catch(error){
-            // const errorInString = JSON.stringify(error.response.data.msg)
-            //     props.showAlert(errorInString,"success");
-            console.log(error);
+             const errorInString = JSON.stringify(error.response.data.msg)
+                props.showAlert(errorInString,"danger");
+            //console.log(error.response.data.msg);
         }
 
         // //const formData = new FormData();
@@ -70,16 +85,16 @@ export default function Home() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="d-flex flex-column align-items-center text-center">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150" />
+                                        <img src={profile.image} alt="ProfilePicture" className="rounded-circle" width="150" id="photodisplay" name="photodisplay" />
                                         <div className="mt-3">
                                             <h4>{profile.name}</h4>
                                         </div>
 
                                         <form onSubmit={onSubmit}>
-                                            <div class="mb-3">
+                                            <div className="mb-3">
                                                 
-                                                <input class="form-control" type="file" id="photoupload" name="photoupload" onChange={onChange}/>
-                                                <button type="submit" class="btn btn-dark my-2">Upload</button>
+                                                <input className="form-control" type="file" id="photoupload" name="photoupload" onChange={onChange} accept="image/*" />
+                                                <button type="submit" className="btn btn-dark my-2">Upload</button>
                                             </div>
                                         </form>
 

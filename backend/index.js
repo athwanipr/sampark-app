@@ -10,6 +10,7 @@ const app = express();   //Declaring an express variable app
 
 app.use(cors());          //Allow app variable to use cors
 app.use(express.json());        //Required so that req body in json can be sent
+app.use('/upload',express.static('upload'));  //Making static path to access images
 
 connectToMongo();       //Connecting with db
 

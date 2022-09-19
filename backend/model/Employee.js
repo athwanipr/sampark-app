@@ -39,7 +39,8 @@ const employeeSchema = mongoose.Schema({
         required:true
     },
     image:{
-        type:String
+        type:String,
+        default:"http://localhost:8080/upload/employeeImage.png"
     }
     
 })

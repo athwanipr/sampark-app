@@ -33,7 +33,7 @@ function App() {
     <Routes>
       <Route exact path='/login' element={<Login showAlert={showAlert}/>}>
       </Route>
-      <Route exact path='/' element={<Home/>}>
+      <Route exact path='/' element={<Home showAlert={showAlert}/> }>
       </Route>
     </Routes>
     </div>

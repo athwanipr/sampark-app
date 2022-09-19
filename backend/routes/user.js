@@ -63,7 +63,7 @@ router.post('/createuser',
             res.json({code:1,msg:"User Creation Successful"})
         }
         catch (error) {
-            res.status(500).json({code:3, error:"Internal Server Error"});
+            res.status(500).json({code:3, msg:"Internal Server Error"});
         }
     });
 
@@ -93,7 +93,7 @@ async (req, res) => {
             res.status(200).json({ code:1, authToken:authToken});
     }
     catch (error) {
-        res.status(500).json({code:3,error:"Internal Server Error"});
+        res.status(500).json({code:3,msg:"Internal Server Error"});
     }
 });
 
@@ -104,10 +104,10 @@ router.get('/getuser',fetchuser,
             const employeeId = req.employee.id;
             const employee = await Employee.findById(employeeId).select("-password");
             res.json(employee);
-            console.log(employee);
+            //console.log(employee);
         }
         catch (error) {
-            res.status(500).send("Internal Server Error");
+            res.status(500).json({msg:"Internal Server Error"});
         }
     });
 
@@ -115,12 +115,20 @@ router.get('/getuser',fetchuser,
 
     router.post('/setprofilepic',upload.single('image'),async(req,res)=>{
         try{
-            console.log(req.file.filename);
-            res.send(req.file);
+            //console.log(req.file.filename);
+            const updatedEmployee = await Employee.findOneAndUpdate({erpId:req.body.erpId},
+            {image:`http://localhost:8080/upload/${req.file.filename}`},{new:true})
+            console.log(updatedEmployee);
+            //res.send(req.file);
+            
+            if(updatedEmployee)
+            res.json({code:1, msg:"Photo uploaded successfully", updatedEmployee:updatedEmployee});
+            else
+            res.json({code:2, msg:"Error in uploading photo"});
         }
         catch (error) {
             //console.log(error);
-            res.status(500).send("Internal Server Error");
+            res.status(500).json({msg:"Internal Server Error"});
         }
     });
 module.exports = router;

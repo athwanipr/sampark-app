@@ -44,15 +44,14 @@ export default function Login(props) {
                 }
                 if(response.data.code===2) 
                 {
-                    const msgInString = JSON.stringify(response.data.msg)
-                    props.showAlert(msgInString,"success");
+                    props.showAlert(response.data.msg,"danger");
                 }
-                
-                
+                       
             }
             catch(error){
                 const errorInString = JSON.stringify(error.response.data.msg)
-                    props.showAlert(errorInString,"success");
+                    props.showAlert(errorInString,"danger");
+                
             }
     }
 
