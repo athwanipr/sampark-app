@@ -50,7 +50,7 @@ router.post('/createuser',
             res.json({code:1,msg:"User Creation Successful"})
         }
         catch (error) {
-            res.status(500).json({resCode:3, error:"Internal Server Error"});
+            res.status(500).json({code:3, error:"Internal Server Error"});
         }
     });
 

@@ -23,7 +23,11 @@ export default function Home() {
             });
         //console.log(response);
         setProfile({ "erpId": response.data.erpId, "name": response.data.name, "designation": response.data.designation, "office": response.data.office, "mobileno": response.data.mobileno, "email": response.data.email, "role": response.data.role })
+
+        
     }
+
+    
 
     return (
         <>
@@ -38,22 +42,8 @@ export default function Home() {
                                         <div className="mt-3">
                                             <h4>{profile.name}</h4>
                                         </div>
-                                        <div className="input-group mb-3">
-                                            <div className="custom-file">
-                                                <input
-                                                    type="file"
-                                                    className="custom-file-input"
-                                                    id="inputGroupFile01"
-                                                    aria-describedby="inputGroupFileAddon01"
-                                                />
-                                                {/* <label className="custom-file-label" htmlFor="inputGroupFile01">
-                                                    Choose file
-                                                </label> */}
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <button className="btn btn-dark" type="submit">Upload</button>
-                                        </div>
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
